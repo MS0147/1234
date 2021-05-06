@@ -16,7 +16,7 @@ nc: 1
 ndf: 32
 ngf: 32
 ngpu: 1
-niter: 100
+niter: 5
 nz: 50
 outf: ./output
 print_freq: 100

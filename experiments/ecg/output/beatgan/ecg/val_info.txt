@@ -1,0 +1,5 @@
+[1] auc:0.8985 	 best_auc:0.8985 in epoch[1]
+[2] auc:0.8853 	 best_auc:0.8985 in epoch[1]
+[3] auc:0.8809 	 best_auc:0.8985 in epoch[1]
+[4] auc:0.8988 	 best_auc:0.8988 in epoch[4]
+[5] auc:0.8906 	 best_auc:0.8988 in epoch[4]

@@ -135,6 +135,7 @@ class BeatGAN(AD_MODEL):
             for epoch in range(self.niter):
                 self.cur_epoch+=1
                 self.train_epoch()
+                print('check2')
                 auc,th,f1=self.validate()
                 if auc > best_auc:
                     best_auc = auc
@@ -153,6 +154,7 @@ class BeatGAN(AD_MODEL):
         self.save(self.train_hist)
 
         self.save_loss(self.train_hist)
+        print('check error point')
 
 
 
@@ -233,8 +235,8 @@ class BeatGAN(AD_MODEL):
         # --
 
 
-        self.err_d_real = self.bce_criterion(self.out_d_real, torch.full((self.batchsize,), self.real_label, device=self.device))
-        self.err_d_fake = self.bce_criterion(self.out_d_fake, torch.full((self.batchsize,), self.fake_label, device=self.device))
+        self.err_d_real = self.bce_criterion(self.out_d_real.type(torch.float), torch.full((self.batchsize,), self.real_label, device=self.device).type(torch.float))
+        self.err_d_fake = self.bce_criterion(self.out_d_fake.type(torch.float), torch.full((self.batchsize,), self.fake_label, device=self.device).type(torch.float))
 
 
         self.err_d=self.err_d_real+self.err_d_fake

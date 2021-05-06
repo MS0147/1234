@@ -71,27 +71,27 @@ class Encoder(nn.Module):
         self.ngpu = ngpu
         self.main = nn.Sequential(
             # input is (nc) x 320
-            nn.Conv2d(opt.nc,opt.ndf,4,2,1,bias=False),
+            nn.Conv1d(opt.nc,opt.ndf,4,2,1,bias=False),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf) x 160
-            nn.Conv2d(opt.ndf, opt.ndf * 2, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(opt.ndf * 2),
+            nn.Conv1d(opt.ndf, opt.ndf * 2, 4, 2, 1, bias=False),
+            nn.BatchNorm1d(opt.ndf * 2),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf*2) x 80
-            nn.Conv2d(opt.ndf * 2, opt.ndf * 4, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(opt.ndf * 4),
+            nn.Conv1d(opt.ndf * 2, opt.ndf * 4, 4, 2, 1, bias=False),
+            nn.BatchNorm1d(opt.ndf * 4),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf*4) x 40
-            nn.Conv2d(opt.ndf * 4, opt.ndf * 8, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(opt.ndf * 8),
+            nn.Conv1d(opt.ndf * 4, opt.ndf * 8, 4, 2, 1, bias=False),
+            nn.BatchNorm1d(opt.ndf * 8),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf*8) x 20
-            nn.Conv2d(opt.ndf * 8, opt.ndf * 16, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(opt.ndf * 16),
+            nn.Conv1d(opt.ndf * 8, opt.ndf * 16, 4, 2, 1, bias=False),
+            nn.BatchNorm1d(opt.ndf * 16),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf*16) x 10
 
-            nn.Conv2d(opt.ndf * 16, out_z, 10, 1, 0, bias=False),
+            nn.Conv1d(opt.ndf * 16, out_z, 10, 1, 0, bias=False),
             # state size. (nz) x 1
         )
 
@@ -112,27 +112,27 @@ class Decoder(nn.Module):
         self.ngpu = ngpu
         self.main=nn.Sequential(
             # input is Z, going into a convolution
-            nn.ConvTranspose2d(opt.nz,opt.ngf*16,10,1,0,bias=False),
-            nn.BatchNorm2d(opt.ngf*16),
+            nn.ConvTranspose1d(opt.nz,opt.ngf*16,10,1,0,bias=False),
+            nn.BatchNorm1d(opt.ngf*16),
             nn.ReLU(True),
             # state size. (ngf*16) x10
-            nn.ConvTranspose2d(opt.ngf * 16, opt.ngf * 8, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(opt.ngf * 8),
+            nn.ConvTranspose1d(opt.ngf * 16, opt.ngf * 8, 4, 2, 1, bias=False),
+            nn.BatchNorm1d(opt.ngf * 8),
             nn.ReLU(True),
             # state size. (ngf*8) x 20
-            nn.ConvTranspose2d(opt.ngf * 8, opt.ngf * 4, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(opt.ngf * 4),
+            nn.ConvTranspose1d(opt.ngf * 8, opt.ngf * 4, 4, 2, 1, bias=False),
+            nn.BatchNorm1d(opt.ngf * 4),
             nn.ReLU(True),
             # state size. (ngf*2) x 40
-            nn.ConvTranspose2d(opt.ngf * 4, opt.ngf*2, 4, 2, 1, bias=False),
-            nn.BatchNorm2d(opt.ngf*2),
+            nn.ConvTranspose1d(opt.ngf * 4, opt.ngf*2, 4, 2, 1, bias=False),
+            nn.BatchNorm1d(opt.ngf*2),
             nn.ReLU(True),
             # state size. (ngf) x 80
-            nn.ConvTranspose2d(opt.ngf * 2, opt.ngf , 4, 2, 1, bias=False),
-            nn.BatchNorm2d(opt.ngf ),
+            nn.ConvTranspose1d(opt.ngf * 2, opt.ngf , 4, 2, 1, bias=False),
+            nn.BatchNorm1d(opt.ngf ),
             nn.ReLU(True),
             # state size. (ngf) x 160
-            nn.ConvTranspose2d(opt.ngf , opt.nc, 4, 2, 1, bias=False),
+            nn.ConvTranspose1d(opt.ngf , opt.nc, 4, 2, 1, bias=False),
             nn.Tanh()
             # state size. (nc) x 320
 

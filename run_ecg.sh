@@ -2,7 +2,7 @@
 
 cd experiments/ecg
 
-test=0    # 0 means train the model, 1 means evaluate the model
+test=1    # 0 means train the model, 1 means evaluate the model
 threshold=0.02
 fold_cnt=1
 
@@ -10,7 +10,7 @@ dataroot="./dataset/preprocessed/ano0/"
 model="beatgan"
 
 w_adv=1
-niter=100
+niter=10
 lr=0.0001
 n_aug=0
 

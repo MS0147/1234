@@ -210,7 +210,7 @@ def save_ts_heatmap(input,output,save_path):
 
     ax[1].imshow(heat_norm, cmap="jet", aspect="auto")
     ax[1].set_yticks([])
-    fig.tight_layout()
+    #fig.tight_layout()
     # fig.show()
     # return
     fig.savefig(save_path)

@@ -63,7 +63,7 @@ class Encoder(nn.Module):
             # state size. (ndf*16) x 10
 
             #nn.Conv1d(opt.ndf * 16, out_z, 10, 1, 0, bias=False)
-            nn.Conv2d(opt.ndf * 16, out_z, 10, 1, 0, bias=False),,
+            nn.Conv2d(opt.ndf * 16, out_z, 10, 1, 0, bias=False),
             # state size. (nz) x 1
         )
 

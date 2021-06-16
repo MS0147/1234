@@ -33,6 +33,9 @@ network.py
 2) Decoder is inverse of Encoder
 
 
+option.py
+1) change batchsize from 64 to 32, because Memory allocate issue was happened.
+
 etc)
 1) 2D-data must have the shape (n,1,w,h)
    1D-data is (n,1,w)

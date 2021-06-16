@@ -48,22 +48,18 @@ class Encoder(nn.Module):
             nn.Conv2d(opt.ndf * 2, opt.ndf * 4, 4, 2, 1, bias=False),
             nn.BatchNorm2d(opt.ndf * 4),
             nn.LeakyReLU(0.2, inplace=True),
-            # state size. (ndf*4) x 40
-            #nn.Conv1d(opt.ndf * 4, opt.ndf * 8, 4, 2, 1, bias=False),
-            #nn.BatchNorm1d(opt.ndf * 8),
+
             nn.Conv2d(opt.ndf * 4, opt.ndf * 8, 4, 2, 1, bias=False),
             nn.BatchNorm2d(opt.ndf * 8),
             nn.LeakyReLU(0.2, inplace=True),
-            # state size. (ndf*8) x 20
-            #nn.Conv1d(opt.ndf * 8, opt.ndf * 16, 4, 2, 1, bias=False),
-            #nn.BatchNorm1d(opt.ndf * 16),
-            nn.Conv2d(opt.ndf * 8, opt.ndf * 16, 4, 2, 1, bias=False),
+
+            nn.Conv2d(opt.ndf * 8, opt.ndf * 16, 4, 1, 1, bias=False),
             nn.BatchNorm2d(opt.ndf * 16),
             nn.LeakyReLU(0.2, inplace=True),
             # state size. (ndf*16) x 10
 
             #nn.Conv1d(opt.ndf * 16, out_z, 10, 1, 0, bias=False)
-            nn.Conv2d(opt.ndf * 16, out_z, 10, 1, 0, bias=False),
+            nn.Conv2d(opt.ndf * 16, out_z, 7, 1, 0, bias=False),
             # state size. (nz) x 1
         )
 
@@ -84,21 +80,14 @@ class Decoder(nn.Module):
         super(Decoder, self).__init__()
         self.ngpu = ngpu
         self.main=nn.Sequential(
-            # input is Z, going into a convolution
-            #nn.ConvTranspose1d(opt.nz,opt.ngf*16,10,1,0,bias=False),
-            #nn.BatchNorm1d(opt.ngf*16),
-            nn.ConvTranspose2d(opt.nz,opt.ngf*16,10,1,0,bias=False),
+            nn.ConvTranspose2d(opt.nz,opt.ngf*16,7,1,0,bias=False),
             nn.BatchNorm2d(opt.ngf*16),
             nn.ReLU(True),
-            # state size. (ngf*16) x10
-            #nn.ConvTranspose1d(opt.ngf * 16, opt.ngf * 8, 4, 2, 1, bias=False),
-            #nn.BatchNorm1d(opt.ngf * 8),
-            nn.ConvTranspose2d(opt.ngf * 16, opt.ngf * 8, 4, 2, 1, bias=False),
+            
+            nn.ConvTranspose2d(opt.ngf * 16, opt.ngf * 8, 4, 1, 1, bias=False),
             nn.BatchNorm2d(opt.ngf * 8),
             nn.ReLU(True),
-            # state size. (ngf*8) x 20
-            #nn.ConvTranspose1d(opt.ngf * 8, opt.ngf * 4, 4, 2, 1, bias=False),
-            #nn.BatchNorm1d(opt.ngf * 4),
+            
             nn.ConvTranspose2d(opt.ngf * 8, opt.ngf * 4, 4, 2, 1, bias=False),
             nn.BatchNorm2d(opt.ngf * 4),
             nn.ReLU(True),

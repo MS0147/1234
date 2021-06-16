@@ -78,8 +78,8 @@ class BeatGAN(AD_MODEL):
             print_network(self.D)
 
 
-        self.bce_criterion = nn.BCELoss()
-        self.mse_criterion=nn.MSELoss()
+        self.bce_criterion = nn.BCELoss().cuda()
+        self.mse_criterion=nn.MSELoss().cuda()
 
 
         self.optimizerD = optim.Adam(self.D.parameters(), lr=opt.lr, betas=(opt.beta1, 0.999))
@@ -135,7 +135,6 @@ class BeatGAN(AD_MODEL):
             for epoch in range(self.niter):
                 self.cur_epoch+=1
                 self.train_epoch()
-                print('check2')
                 auc,th,f1=self.validate()
                 if auc > best_auc:
                     best_auc = auc
@@ -154,7 +153,6 @@ class BeatGAN(AD_MODEL):
         self.save(self.train_hist)
 
         self.save_loss(self.train_hist)
-        print('check error point')
 
 
 
@@ -211,7 +209,6 @@ class BeatGAN(AD_MODEL):
 
     ##
     def optimize(self):
-
         self.update_netd()
         self.update_netg()
 
@@ -234,9 +231,20 @@ class BeatGAN(AD_MODEL):
         self.out_d_fake, self.feat_fake = self.D(self.fake)
         # --
 
+        #to~~~ delete if some problem will happen
+        #print('self.out_d_real: ',type(self.out_d_real))
+        #print('self.device: ', self.device)
+        #print('self.batchsize: ', self.batchsize)
+        #print('self.real_label: ',self.real_label)
+        #print(self.real_label.device)
+        #print('torch.full: ', torch.full((self.batchsize,), self.real_label, device=self.device).type(torch.FloatTensor))
+        
+        
+        #below the code, if .cuda() isn't exist, torch.full.device is cpu
+        #print('torch.full is go to cpu?: ', torch.full((self.batchsize,), self.real_label, device=self.device).type(torch.FloatTensor).cuda().device)
+        self.err_d_real = self.bce_criterion(self.out_d_real, torch.full((self.batchsize,), self.real_label, device=self.device).type(torch.FloatTensor).cuda())
 
-        self.err_d_real = self.bce_criterion(self.out_d_real.type(torch.float), torch.full((self.batchsize,), self.real_label, device=self.device).type(torch.float))
-        self.err_d_fake = self.bce_criterion(self.out_d_fake.type(torch.float), torch.full((self.batchsize,), self.fake_label, device=self.device).type(torch.float))
+        self.err_d_fake = self.bce_criterion(self.out_d_fake, torch.full((self.batchsize,), self.fake_label, device=self.device).type(torch.FloatTensor).cuda())
 
 
         self.err_d=self.err_d_real+self.err_d_fake

@@ -12,7 +12,7 @@ from data import load_data
 
 device = torch.device("cuda:0" if
 torch.cuda.is_available() else "cpu")
-
+print('device: ',device)
 
 
 
@@ -29,6 +29,7 @@ else:
 
 
 model=MyModel(opt,dataloader,device)
+print('\nmodel_device:',model.device,'\n')
 
 if not opt.istest:
     print("################  Train  ##################")

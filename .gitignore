@@ -1,2 +1,6 @@
 #folder
 experiments/ecg/dataset/preprocessed/ano0
+
+experiments/ecg/output/beatgan/ecg/model/
+
+

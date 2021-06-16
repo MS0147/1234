@@ -27,12 +27,18 @@ def load_data(opt):
 
     if opt.dataset=="ecg":
 
-        N_samples=np.load(os.path.join(opt.dataroot, "N_samples.npy")) #NxCxL
+        '''N_samples=np.load(os.path.join(opt.dataroot, "N_samples.npy")) #NxCxL
         S_samples=np.load(os.path.join(opt.dataroot, "S_samples.npy"))
         V_samples = np.load(os.path.join(opt.dataroot, "V_samples.npy"))
         F_samples = np.load(os.path.join(opt.dataroot, "F_samples.npy"))
         Q_samples = np.load(os.path.join(opt.dataroot, "Q_samples.npy"))
+        '''
 
+        N_samples = np.load(os.path.join(opt.dataroot,'n_spectrogram.npy'))
+        S_samples = np.load(os.path.join(opt.dataroot,'s_spectrogram.npy'))
+        V_samples = np.load(os.path.join(opt.dataroot,'v_spectrogram.npy'))
+        F_samples = np.load(os.path.join(opt.dataroot,'f_spectrogram.npy'))
+        Q_samples = np.load(os.path.join(opt.dataroot,'q_spectrogram.npy'))
 
 
         # normalize all
@@ -62,20 +68,20 @@ def load_data(opt):
         Q_samples = Q_samples[:, :opt.nc, :]'''
         
         for i in range(N_samples.shape[0]):
-            N_samples[i]=normalize(N_samples[i][:][:])
+            N_samples[i] = normalize(N_samples[i])
 
         for i in range(S_samples.shape[0]):
-            S_samples[i] = normalize(S_samples[i][:][:])
+            S_samples[i] = normalize(S_samples[i])
 
         for i in range(V_samples.shape[0]):
-            V_samples[i] = normalize(V_samples[i][:][:])
+            V_samples[i] = normalize(V_samples[i])
             
         for i in range(F_samples.shape[0]):
-            F_samples[i] = normalize(F_samples[i][:][:])
+            F_samples[i] = normalize(F_samples[i])
 
         for i in range(Q_samples.shape[0]):
-            Q_samples[i] = normalize(Q_samples[i][:][:])
-
+            Q_samples[i] = normalize(Q_samples[i])
+        
 
         # train / test
         test_N,test_N_y, train_N,train_N_y = getFloderK(N_samples,opt.folder,0)

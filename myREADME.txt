@@ -32,9 +32,11 @@ network.py
 
 2) Decoder is inverse of Encoder
 
+3) Third model accuracy is 0.9460. the 5th and 6th layer parameter is saved in that file.
+
 
 option.py
-1) change batchsize from 64 to 32, because Memory allocate issue was happened.
+1) change batchsize from 128 to 64, because Memory allocate issue was happened.
 
 etc)
 1) 2D-data must have the shape (n,1,w,h)
@@ -44,3 +46,4 @@ etc)
     Push change.py and change2.py to ano0.
     Diretory ano0 should have _ _samples.npy file.
 
+2) Data augment can exec in run_ecg.sh n_aug

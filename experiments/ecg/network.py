@@ -1,5 +1,3 @@
-
-
 import os,pickle
 import numpy as np
 import torch
@@ -195,7 +193,6 @@ class AD_MODEL(object):
 
     def saveTestPair(self,pair,save_dir):
         '''
-
         :param pair: list of (input,output)
         :param save_dir:
         :return:
@@ -211,7 +208,6 @@ class AD_MODEL(object):
 
     def analysisRes(self,N_res,A_res,min_score,max_score,threshold,save_dir):
         '''
-
         :param N_res: list of normal score
         :param A_res:  dict{ "S": list of S score, "V":...}
         :param min_score:

@@ -10,7 +10,7 @@ dataroot="./dataset/preprocessed/ano0/"
 model="beatgan"
 
 w_adv=1
-niter=100
+niter=70
 lr=0.0001
 n_aug=0
 

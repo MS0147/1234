@@ -4,11 +4,11 @@ import matplotlib.pyplot as plt
 import librosa, librosa.display 
 import cv2
 
-n_data = np.load('N_samples.npy') 
-s_data = np.load('S_samples.npy') 
-v_data = np.load('V_samples.npy') 
-f_data = np.load('F_samples.npy') 
-q_data = np.load('Q_samples.npy')
+n_data = np.load('ano0/N_samples.npy') 
+s_data = np.load('ano0/S_samples.npy') 
+v_data = np.load('ano0/V_samples.npy') 
+f_data = np.load('ano0/F_samples.npy') 
+q_data = np.load('ano0/Q_samples.npy')
 
 n_fft_n= 256
 win_length_n=64

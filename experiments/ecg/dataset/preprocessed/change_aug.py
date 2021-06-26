@@ -115,7 +115,7 @@ def ConvSTFT(data, save_name):
     np.save(output_filename, lst)
 
 n_data = np.load('ano0/N_samples.npy')
-test_N,test_N_y, train_N,train_N_y = getFloderK(N_samples,opt.0,0)
+test_N,test_N_y, train_N,train_N_y = getFloderK(N_samples,0,0)
 train_N, val_N, train_N_y, val_N_y = getPercent(train_N, train_N_y, 0.1, 0)
 
 s_data = np.load('ano0/S_samples.npy') 

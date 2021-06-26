@@ -67,7 +67,7 @@ def load_data(opt):
                 Q_samples[i][j] = normalize(Q_samples[i][j][:])
         Q_samples = Q_samples[:, :opt.nc, :]'''
         
-        '''for i in range(N_samples.shape[0]):
+        for i in range(N_samples.shape[0]):
             N_samples[i] = normalize(N_samples[i])
 
         for i in range(S_samples.shape[0]):
@@ -80,7 +80,7 @@ def load_data(opt):
             F_samples[i] = normalize(F_samples[i])
 
         for i in range(Q_samples.shape[0]):
-            Q_samples[i] = normalize(Q_samples[i])'''
+            Q_samples[i] = normalize(Q_samples[i])
         
 
         # train / test

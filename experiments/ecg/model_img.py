@@ -1,3 +1,8 @@
+import cv2
+import time,os,sys
+import librosa, librosa.display 
+
+from matplotlib import pyplot as plt
 
 import time,os,sys
 
@@ -232,12 +237,12 @@ class BeatGAN(AD_MODEL):
         # --
 
         #to~~~ delete if some problem will happen
-        print('self.out_d_real: ',self.out_d_real.shape)
+        #print('self.out_d_real: ',type(self.out_d_real))
         #print('self.device: ', self.device)
         #print('self.batchsize: ', self.batchsize)
-        print('self.real_label: ',self.real_label)
+        #print('self.real_label: ',self.real_label)
         #print(self.real_label.device)
-        print('torch.full: ', torch.full((self.batchsize,), self.real_label, device=self.device).shape)
+        #print('torch.full: ', torch.full((self.batchsize,), self.real_label, device=self.device).type(torch.FloatTensor))
         
         
         #below the code, if .cuda() isn't exist, torch.full.device is cpu
@@ -310,7 +315,7 @@ class BeatGAN(AD_MODEL):
         rocprc,rocauc,best_th,best_f1=evaluate(y_,y_pred)
         return rocauc,best_th,best_f1
 
-    def predict(self,dataloader_,scale=True):
+    def predict(self,dataloader_,scale=True, path="/"):
         with torch.no_grad():
 
             self.an_scores = torch.zeros(size=(len(dataloader_.dataset),), dtype=torch.float32, device=self.device)
@@ -318,12 +323,59 @@ class BeatGAN(AD_MODEL):
             self.latent_i  = torch.zeros(size=(len(dataloader_.dataset), self.opt.nz), dtype=torch.float32, device=self.device)
             self.dis_feat = torch.zeros(size=(len(dataloader_.dataset), self.opt.ndf*16*10), dtype=torch.float32,
                                         device=self.device)
-
-
+                                        
+            fake_path = path + "/fake/"
+            real_path = path + "/real/"
+            diff_path = path + "/diff/"
+            
+            if not os.path.exists(fake_path):
+                os.makedirs(fake_path)
+                
+            if not os.path.exists(real_path):
+                os.makedirs(real_path)
+                
+            if not os.path.exists(diff_path):
+                os.makedirs(diff_path)
+                
+            fig1 = plt.figure(figsize=(5,5))
             for i, data in enumerate(dataloader_, 0):
 
                 self.set_input(data)
                 self.fake, latent_i = self.G(self.input)
+                
+                
+                fake = self.fake.cpu().numpy()
+
+                #plt.imshow(np.reshape(fake[1], [128,128,1]))
+                
+                img = librosa.display.specshow(fake[0][0], sr=360, hop_length = 2, y_axis="linear", x_axis="time")
+                plt.axis('off')
+                fig1.savefig(fake_path+"fake"+str(i)+".png")
+
+                real = self.input.cpu().numpy()
+                img = librosa.display.specshow(real[0][0], sr=360, hop_length = 2, y_axis="linear", x_axis="time")
+                #fig1.axis('off')
+                #plt.imshow(np.reshape(real[1], [128,128,1]))
+                fig1.savefig(real_path+"real"+str(i)+".png")
+                
+                
+                # load images
+                image1 = cv2.imread(real_path+"real"+str(i)+".png")
+                image2 = cv2.imread(fake_path+"fake"+str(i)+".png")
+
+                # compute diff
+                difference = cv2.subtract(image2, image1)
+
+                 # color the mask red
+                Conv_hsv_Gray = cv2.cvtColor(difference, cv2.COLOR_BGR2GRAY)
+                ret, mask = cv2.threshold(Conv_hsv_Gray, 0, 255,cv2.THRESH_BINARY_INV |cv2.THRESH_OTSU)
+                difference[mask != 255] = [0, 0, 255]
+
+                 # add the red mask to the images to make the differences obvious
+                image2[mask != 255] = [0, 0, 255]
+
+                 # store images
+                cv2.imwrite(diff_path+"diffOverImage"+str(i)+".png", image2)
 
 
                 # error = torch.mean(torch.pow((d_feat.view(self.input.shape[0],-1)-d_gen_feat.view(self.input.shape[0],-1)), 2), dim=1)
@@ -349,7 +401,6 @@ class BeatGAN(AD_MODEL):
 
     def predict_for_right(self,dataloader_,min_score,max_score,threshold,save_dir):
         '''
-
         :param dataloader:
         :param min_score:
         :param max_score:
@@ -407,11 +458,11 @@ class BeatGAN(AD_MODEL):
         if not os.path.exists(save_dir):
             os.makedirs(save_dir)
 
-        y_N, y_pred_N=self.predict(self.dataloader["test_N"],scale=False)
-        y_S, y_pred_S = self.predict(self.dataloader["test_S"],scale=False)
-        y_V, y_pred_V = self.predict(self.dataloader["test_V"],scale=False)
-        y_F, y_pred_F = self.predict(self.dataloader["test_F"],scale=False)
-        y_Q, y_pred_Q = self.predict(self.dataloader["test_Q"],scale=False)
+        y_N, y_pred_N=self.predict(self.dataloader["test_N"],scale=False, path=os.path.join(save_dir, "N"))
+        y_S, y_pred_S = self.predict(self.dataloader["test_S"],scale=False, path=os.path.join(save_dir, "S"))
+        y_V, y_pred_V = self.predict(self.dataloader["test_V"],scale=False, path=os.path.join(save_dir, "V"))
+        y_F, y_pred_F = self.predict(self.dataloader["test_F"],scale=False,path=os.path.join(save_dir, "F"))
+        y_Q, y_pred_Q = self.predict(self.dataloader["test_Q"],scale=False, path=os.path.join(save_dir, "Q"))
         over_all=np.concatenate([y_pred_N,y_pred_S,y_pred_V,y_pred_F,y_pred_Q])
         over_all_gt=np.concatenate([y_N,y_S,y_V,y_F,y_Q])
         min_score,max_score=np.min(over_all),np.max(over_all)

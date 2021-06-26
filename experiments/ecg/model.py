@@ -231,13 +231,13 @@ class BeatGAN(AD_MODEL):
         self.out_d_fake, self.feat_fake = self.D(self.fake)
         # --
 
-        #to~~~ delete if some problem will happen
-        print('self.out_d_real: ',self.out_d_real.shape)
+        #------- Debug--------#
+        #print('self.out_d_real: ',self.out_d_real.shape)
         #print('self.device: ', self.device)
         #print('self.batchsize: ', self.batchsize)
-        print('self.real_label: ',self.real_label)
+        #print('self.real_label: ',self.real_label)
         #print(self.real_label.device)
-        print('torch.full: ', torch.full((self.batchsize,), self.real_label, device=self.device).shape)
+        #print('torch.full: ', torch.full((self.batchsize,), self.real_label, device=self.device).shape)
         
         
         #below the code, if .cuda() isn't exist, torch.full.device is cpu

@@ -1,0 +1,12 @@
+ecg_aug1
+---
+batch:64
+augmentation
+norm when stft data is input
+
+ecg_batch64
+---
+batch:64
+no augmentation
+norm when stft data is input
+

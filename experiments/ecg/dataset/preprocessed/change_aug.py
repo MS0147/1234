@@ -133,12 +133,12 @@ sr = 360
 
 
 #ConvSTFT(n_data,'n_spectrogram')
-ConvSTFT(train_N,'train_N')
-ConvSTFT(test_N,'test_N')
-ConvSTFT(val_N,'val_N')
+ConvSTFT(train_N,'ano0/train_N')
+ConvSTFT(test_N,'ano0/test_N')
+ConvSTFT(val_N,'ano0/val_N')
 
-ConvSTFT(s_data,'s_spectrogram')
-ConvSTFT(v_data,'v_spectrogram')
-ConvSTFT(f_data,'f_spectrogram')
-ConvSTFT(q_data,'q_spectrogram')
+ConvSTFT(s_data,'ano0/s_spectrogram')
+ConvSTFT(v_data,'ano0/v_spectrogram')
+ConvSTFT(f_data,'ano0/f_spectrogram')
+ConvSTFT(q_data,'ano0/q_spectrogram')
 

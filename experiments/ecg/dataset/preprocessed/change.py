@@ -56,7 +56,7 @@ def ConvSTFT(data, save_name):
     #npy로 저장 
     lst = np.array(lst)
     lst = lst.reshape(lst.shape[0],1,lst.shape[1],lst.shape[2])
-    output_filename = save_name
+    output_filename = 'ano0/' + save_name
     print(lst.shape)
     np.save(output_filename, lst)
 

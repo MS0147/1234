@@ -34,10 +34,7 @@ def load_data(opt):
         Q_samples = np.load(os.path.join(opt.dataroot, "Q_samples.npy"))
         '''
 
-        train_N = np.load(os.path.join(opt.dataroot,'train_N.npy'))
-        test_N = np.load(os.path.join(opt.dataroot,'test_N.npy'))
-        val_N = np.load(os.path.join(opt.dataroot,'val_N.npy'))
-        
+        N_samples = np.load(os.path.join(opt.dataroot,'n_spectrogram.npy'))
         S_samples = np.load(os.path.join(opt.dataroot,'s_spectrogram.npy'))
         V_samples = np.load(os.path.join(opt.dataroot,'v_spectrogram.npy'))
         F_samples = np.load(os.path.join(opt.dataroot,'f_spectrogram.npy'))
@@ -70,14 +67,8 @@ def load_data(opt):
                 Q_samples[i][j] = normalize(Q_samples[i][j][:])
         Q_samples = Q_samples[:, :opt.nc, :]'''
         
-        for i in range(train_N.shape[0]):
-            train_N[i] = normalize(train_N[i])
-
-        for i in range(test_N.shape[0]):
-            test_N[i] = normalize(test_N[i])
-
-        for i in range(val_N.shape[0]):
-            val_N[i] = normalize(val_N[i])
+        for i in range(N_samples.shape[0]):
+            N_samples[i] = normalize(N_samples[i])
 
         for i in range(S_samples.shape[0]):
             S_samples[i] = normalize(S_samples[i])
@@ -93,9 +84,7 @@ def load_data(opt):
         
 
         # train / test
-        #test_N,test_N_y, train_N,train_N_y = getFloderK(N_samples,opt.folder,0)
-        train_N, train_N_y = train_N, np.zeros((train_N.shape[0], 1))
-        test_N, test_N_y = test_N, np.zeros((test_N.shape[0], 1))
+        test_N,test_N_y, train_N,train_N_y = getFloderK(N_samples,opt.folder,0)
         # test_S,test_S_y, train_S,train_S_y = getFloderK(S_samples, opt.folder,1)
         # test_V,test_V_y, train_V,train_V_y = getFloderK(V_samples, opt.folder,1)
         # test_F,test_F_y, train_F,train_F_y = getFloderK(F_samples, opt.folder,1)
@@ -107,9 +96,8 @@ def load_data(opt):
 
 
         # train / val
-        #train_N, val_N, train_N_y, val_N_y = getPercent(train_N, train_N_y, 0.1, 0)
-        val_N, val_N_y = val_N, np.zeros((val_N.shape[0], 1))
-        
+        train_N, val_N, train_N_y, val_N_y = getPercent(train_N, train_N_y, 0.1, 0)
+
         test_S, val_S, test_S_y, val_S_y = getPercent(test_S, test_S_y, 0.1, 0)
         test_V, val_V, test_V_y, val_V_y = getPercent(test_V, test_V_y, 0.1, 0)
         test_F, val_F, test_F_y, val_F_y = getPercent(test_F, test_F_y, 0.1, 0)

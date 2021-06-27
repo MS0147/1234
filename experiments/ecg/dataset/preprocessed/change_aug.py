@@ -118,6 +118,8 @@ n_data = np.load('ano0/N_samples.npy')
 test_N,test_N_y, train_N,train_N_y = getFloderK(n_data,0,0)
 train_N, val_N, train_N_y, val_N_y = getPercent(train_N, train_N_y, 0.1, 0)
 
+train_N, train_N_y = data_aug(train_N, train_N_y, times=2)
+
 s_data = np.load('ano0/S_samples.npy') 
 v_data = np.load('ano0/V_samples.npy') 
 f_data = np.load('ano0/F_samples.npy') 

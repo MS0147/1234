@@ -7,7 +7,7 @@ device: gpu
 folder: 0
 gpu_ids: [0]
 isize: 320
-istest: False
+istest: True
 lr: 0.0001
 model: beatgan
 n_aug: 0
@@ -20,7 +20,7 @@ niter: 100
 nz: 50
 outf: ./output
 print_freq: 100
-threshold: 0.05
+threshold: 0.02
 w_adv: 1
 workers: 1
 -------------- End ----------------

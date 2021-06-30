@@ -16,7 +16,7 @@ hp_length_n=2
 sr = 360
 
 def normalize(seq):
-    return (seq - np.mean(lst)) / np.std(lst)
+    return (seq - np.mean(seq)) / np.std(seq)
 
 def ConvSTFT(data, save_name):
     lst = [] #npy로 저장할 데이터들

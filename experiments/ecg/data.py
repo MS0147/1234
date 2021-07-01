@@ -1,4 +1,5 @@
-
+import matplotlib.pyplot as plt
+import librosa, librosa.display
 import os
 import numpy as np
 import torch
@@ -14,9 +15,6 @@ def normalize(seq):
     :return:
     '''
     return 2*(seq-np.min(seq))/(np.max(seq)-np.min(seq))-1
-
-def z_score_normalize(seq):
-    return (seq - np.mean(lst)) / np.std(lst)
 
 def load_data(opt):
     train_dataset=None
@@ -70,26 +68,25 @@ def load_data(opt):
                 Q_samples[i][j] = normalize(Q_samples[i][j][:])
         Q_samples = Q_samples[:, :opt.nc, :]'''
         
+        
         for i in range(N_samples.shape[0]):
-            #N_samples[i] = normalize(N_samples[i])
-            N_samples[i] = z_score_normalize(N_samples[i])
+            N_samples[i] = normalize(N_samples[i])
 
         for i in range(S_samples.shape[0]):
-            #S_samples[i] = normalize(S_samples[i])
-            S_samples[i] = z_score_normalize(S_samples[i])
+            S_samples[i] = normalize(S_samples[i])
 
         for i in range(V_samples.shape[0]):
-            #V_samples[i] = normalize(V_samples[i])
-            V_samples[i] = z_score_normalize(V_samples[i])
+            V_samples[i] = normalize(V_samples[i])
             
         for i in range(F_samples.shape[0]):
-            #F_samples[i] = normalize(F_samples[i])
-            F_samples[i] = z_score_normalize(F_samples[i])
+            F_samples[i] = normalize(F_samples[i])
 
         for i in range(Q_samples.shape[0]):
-            #Q_samples[i] = normalize(Q_samples[i])
-            Q_samples[i] = z_score_normalize(Q_samples[i])
-        
+            Q_samples[i] = normalize(Q_samples[i])
+            
+     
+    
+    
 
         # train / test
         test_N,test_N_y, train_N,train_N_y = getFloderK(N_samples,opt.folder,0)
@@ -101,6 +98,8 @@ def load_data(opt):
         test_V, test_V_y = V_samples, np.ones((V_samples.shape[0], 1))
         test_F, test_F_y = F_samples, np.ones((F_samples.shape[0], 1))
         test_Q, test_Q_y = Q_samples, np.ones((Q_samples.shape[0], 1))
+        
+        
 
 
         # train / val
@@ -113,6 +112,11 @@ def load_data(opt):
 
         val_data=np.concatenate([val_N,val_S,val_V,val_F,val_Q])
         val_y=np.concatenate([val_N_y,val_S_y,val_V_y,val_F_y,val_Q_y])
+        
+        fig, ax = plt.subplots()
+        img = librosa.display.specshow(train_N[0][0], sr=360, hop_length = 2, ax=ax, y_axis="linear", x_axis="time")
+        fig.savefig("why.png")
+       
 
 
         print("train data size:{}".format(train_N.shape))
@@ -129,8 +133,8 @@ def load_data(opt):
             print("after aug, train data size:{}".format(train_N.shape))
 
 
-
-        train_dataset = TensorDataset(torch.Tensor(train_N),torch.Tensor(train_N_y))
+                
+        train_dataset = TensorDataset(torch.Tensor(train_N),torch.Tensor(train_N_y) )
         val_dataset= TensorDataset(torch.Tensor(val_data), torch.Tensor(val_y))
         test_N_dataset = TensorDataset(torch.Tensor(test_N), torch.Tensor(test_N_y))
         test_S_dataset = TensorDataset(torch.Tensor(test_S), torch.Tensor(test_S_y))

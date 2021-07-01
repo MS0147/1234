@@ -22,10 +22,10 @@ def ConvSTFT(data, save_name):
     lst = [] #npy로 저장할 데이터들
     length = len(data) #출력할 데이터 개수
 
-    for i in range(data.shape[0]):
+    '''for i in range(data.shape[0]):
         for j in range(1):
             data[i][j]=normalize(data[i][j][:])
-    data=data[:,:1,:]
+    data=data[:,:1,:]'''
     
     for i in range(length):
                  
